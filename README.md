@@ -1,4 +1,4 @@
-#ip
+# ip
 
 ipconfig.io clone written in golang using [gorilla/mux](https://github.com/gorilla/mux). Separate handlers for `"Accept: application/json"`, headless and browser requests. 
 
