@@ -40,7 +40,9 @@ func ipFromRequest(headers []string, r *http.Request) (net.IP, error) {
 			 * <client>, <proxy1>, <proxy2>. We just want the client
 			 */
 			s := strings.Index(h, ",")
-			if s != -1 {
+			if s == -1 {
+				remoteIP = h
+			} else {
 				remoteIP = h[:s]
 			}
 		}
