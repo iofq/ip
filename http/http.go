@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"strings"
@@ -99,11 +100,18 @@ func (s *Server) HTMLHandler(rw http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(rw, "Your IP Address: "+ip.String())
 }
 
+func (s *Server) loggingMiddleware(nxt http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.Header)
+	})
+}
+
 func (s *Server) Handler() http.Handler {
 	r := mux.NewRouter()
 	r.HandleFunc("/", s.JSONHandler).Methods("GET").Headers("Accept", "application/json")
 	r.HandleFunc("/", s.HeadlessHandler).Methods("GET").MatcherFunc(headlessMatcher)
 	r.HandleFunc("/", s.HTMLHandler).Methods("GET")
+	r.Use(loggingMiddleware)
 
 	return r
 }
