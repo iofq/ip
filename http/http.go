@@ -111,7 +111,7 @@ func (s *Server) Handler() http.Handler {
 	r.HandleFunc("/", s.JSONHandler).Methods("GET").Headers("Accept", "application/json")
 	r.HandleFunc("/", s.HeadlessHandler).Methods("GET").MatcherFunc(headlessMatcher)
 	r.HandleFunc("/", s.HTMLHandler).Methods("GET")
-	r.Use(loggingMiddleware)
+	r.Use(s.loggingMiddleware)
 
 	return r
 }
